@@ -2,6 +2,8 @@ from ..geometry import utils
 
 class Robot:
     def __init__(self, params = {}) -> None:
+        """A dictionary of parameters can be used to define initial position,
+        pose, step size, and acceptable deviation to reach targets."""
         self.position = params.get("position", [0,0,0])
         self.rotMatrix = params.get(
             "rotation",
@@ -11,9 +13,11 @@ class Robot:
         self.ideal_path = []
 
     def addWaypoint(self, waypoint : list) -> None:
+        """Adds a waypoint to the robot ideal path"""
         self.ideal_path.append(waypoint)
 
     def reorient(self, nextWaypoint : int) -> None:
+        """Reorient the robot towards next waypoint."""
         direction = utils.normalize(
             self.ideal_path[nextWaypoint], self.position)
         if self.rotMatrix[0] != direction:
@@ -21,12 +25,15 @@ class Robot:
             print("Reoriented with direction {}".format(self.rotMatrix[0]))
 
     def move(self) -> bool:
+        """Moving procedure: Start moving the robot along the path, giving a print as output to check when
+        a waypoint is reached or a step is completed. All the movements are performed automatically and a waypoint
+        is considered reached when the robot reaches as close to it as the aceptable distance. Reorientation is
+        automatically calculated"""
         if len(self.ideal_path) == 0:
             print("Undefined path")
             return True
         nextWaypoint = 0
         stepNum = 0
-        #stepToComplete = self.stepSize
         while nextWaypoint < len(self.ideal_path):
             waypointDistance = utils.pointDistance(self.position, self.ideal_path[nextWaypoint])
             while waypointDistance <= self.zoneDeviation:
