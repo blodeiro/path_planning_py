@@ -1,0 +1,9 @@
+#python
+*.pyc
+
+#logger
+*.log
+*.log.*
+
+# develop
+.vscode
