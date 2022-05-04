@@ -13,9 +13,9 @@ def pointDistance(origin : list, end : list) -> float:
 def normalize(vector : list, reference=[0,0,0]) -> list:
     mag = pointDistance(reference, vector)
     uVector = [
-        (vector[0]-reference[0])/mag,
-        (vector[1]-reference[1])/mag,
-        (vector[2]-reference[2])/mag
+        round((vector[0]-reference[0])/mag, 4),
+        round((vector[1]-reference[1])/mag, 4),
+        round((vector[2]-reference[2])/mag, 4)
     ]
     return uVector
 
