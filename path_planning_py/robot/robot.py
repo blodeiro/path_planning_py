@@ -1,4 +1,3 @@
-from xmlrpc.client import Boolean
 from ..geometry import utils
 
 class Robot:
