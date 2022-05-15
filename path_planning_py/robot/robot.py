@@ -11,6 +11,7 @@ class Robot:
         self.stepSize = params.get("step", 10)
         self.zoneDeviation = params.get("deviation", 1)
         self.ideal_path = []
+        self.real_path = [[self.position]]
 
     def addWaypoint(self, waypoint : list) -> None:
         """Adds a waypoint to the robot ideal path"""
@@ -41,6 +42,7 @@ class Robot:
                 nextWaypoint += 1
                 if nextWaypoint == len(self.ideal_path):
                     print("End reached in step {}".format(stepNum))
+                    self.real_path[-1].append(self.ideal_path[-1])
                     return True
                 waypointDistance = utils.pointDistance(self.position, self.ideal_path[nextWaypoint])
             self.reorient(nextWaypoint)
@@ -51,6 +53,7 @@ class Robot:
                         self.ideal_path[nextWaypoint],
                         (waypointDistance - self.zoneDeviation)
                     )
+                self.real_path[-1].append(self.position)
                 stepToComplete -= (waypointDistance - self.zoneDeviation)
                 print("Waypoint {} reached in step {}".format(nextWaypoint,stepNum))
                 nextWaypoint += 1
@@ -64,6 +67,8 @@ class Robot:
                     self.ideal_path[nextWaypoint],
                     stepToComplete
                 )
+            self.real_path[-1].append(self.position)
+            self.real_path.append([self.position])
             print("Step {} completed".format(stepNum))
             stepNum += 1
         print("Error: move completed without finding an end")
